@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import update from "immutability-helper";
 
@@ -6,38 +6,22 @@ import Card from "./Card";
 import { updateContentWhenDND } from "../store/actions/cardsActions";
 
 const CardList = () => {
-  // const { cards } = useSelector((state) => state.cards);
-  // const dispath = useDispatch();
-
-  // const moveCard = (dragIndex, hoverIndex) => {
-  //   const dragCard = cards[dragIndex];
-  //   dispath(
-  //     updateContentWhenDND(
-  //       update(cards, {
-  //         $splice: [
-  //           [dragIndex, 1],
-  //           [hoverIndex, 0, dragCard],
-  //         ],
-  //       })
-  //     )
-  //   );
-  // };
-
-  const [cards, setCards] = useState([
-    {id: 1, title: 'asd', description: 'asd'}
-  ])
+  const { cards } = useSelector((state) => state.cards);
+  const dispath = useDispatch();
 
   const moveCard = (dragIndex, hoverIndex) => {
-    const dragCard = cards[dragIndex]
-    setCards(() => 
-      update(cards, {
-        $splice: [
-          [dragIndex, 1],
-          [hoverIndex, 0, dragCard],
-        ],
-      }),
-    )
-  }
+    const dragCard = cards[dragIndex];
+    dispath(
+      updateContentWhenDND(
+        update(cards, {
+          $splice: [
+            [dragIndex, 1],
+            [hoverIndex, 0, dragCard],
+          ],
+        })
+      )
+    );
+  };
 
   return (
     <div className="cardWrapper">

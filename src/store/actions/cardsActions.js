@@ -22,10 +22,11 @@ export const update = () => {
   };
 };
 
-export const updateContentWhenDND = (cards) => ({
-  type: UPDATE_CONTENT_WHEN_DND,
-  cards,
-});
+export const updateContentWhenDND = (cards) => (dispatch) => {
+  dispatch({ type: UPDATE_CONTENT_WHEN_DND, cards });
+  const changedCards = JSON.stringify(cards);
+  localStorage.setItem("cards", changedCards);
+};
 
 export const createCard = (cardObj, cards) => (dispatch) => {
   const newCard = { ...cardObj, id: Math.floor(Math.random() * (50 * 50)) };

@@ -1,14 +1,17 @@
-import React, { useImperativeHandle, useRef, forwardRef } from "react";
+import React, { useImperativeHandle, useRef } from "react";
 import { NavLink } from "react-router-dom";
 import { DragSource, DropTarget } from "react-dnd";
 
 import ItemTypes from "../ForDND/ItemTypes";
+import { useSelector } from "react-redux";
+
 const style = {
-  border: '1px dashed gray',
-  backgroundColor: 'white',
-  cursor: 'move',
-}
-const Card = forwardRef(
+  border: "1px dashed gray",
+  backgroundColor: "white",
+  cursor: "move",
+};
+
+const Card = React.forwardRef(
   (
     {
       text: { title, descr, id },
@@ -19,16 +22,19 @@ const Card = forwardRef(
     ref
   ) => {
     const elementRef = useRef(null);
+    const pop = useRef(null);
     connectDragSource(elementRef);
     connectDropTarget(elementRef);
     const opacity = isDragging ? 0 : 1;
+
+    const { draggableToggle } = useSelector(state => state.cards)
 
     useImperativeHandle(ref, () => ({
       getNode: () => elementRef.current,
     }));
 
     return (
-      <div className="card" style={{ ...style, opacity }}>
+      <div ref={draggableToggle ? elementRef : pop} className="card" style={{ ...style, opacity }}>
         <h1>{title.length > 6 ? title.substr(0, 6) + "..." : title}</h1>
         <div className="description">
           {descr.length > 80 ? descr.substr(0, 80) + "..." : descr}
@@ -43,49 +49,39 @@ export default DropTarget(
   ItemTypes.CARD,
   {
     hover(props, monitor, component) {
-      console.log(`props`, props);
-
       if (!component) {
-      console.log('47', true)
-
         return null;
       }
-      console.log('49', true)
+
       const node = component.getNode();
       if (!node) {
-      console.log('54', true)
-
         return null;
       }
-
       const dragIndex = monitor.getItem().index;
       const hoverIndex = props.index;
-      if (dragIndex === hoverIndex) {
-      console.log('62', true)
 
+      if (dragIndex === hoverIndex) {
         return;
       }
 
       const hoverBoundingRect = node.getBoundingClientRect();
-      const hoverMiddleY =
-        (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+
+      const hoverMiddleX =
+        (hoverBoundingRect.left - hoverBoundingRect.right) / 24;
+
       const clientOffset = monitor.getClientOffset();
-      const hoverClientY = clientOffset.y - hoverBoundingRect.top;
-      console.log('72', true)
 
-      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+      const hoverClientX = clientOffset.x - hoverBoundingRect.right;
+
+      if (dragIndex < hoverIndex && hoverClientX < hoverMiddleX) {
         return;
       }
-      console.log('77', true)
 
-
-      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+      if (dragIndex > hoverIndex && hoverClientX > hoverMiddleX) {
         return;
       }
-      console.log('83', true)
-      
+
       props.moveCard(dragIndex, hoverIndex);
-      console.log(`props`, props);
       monitor.getItem().index = hoverIndex;
     },
   },

@@ -13,10 +13,10 @@ export const Header = () => {
       <div className="customToggleBtn">
         <div
           className="customBtn"
-          style={{ right: draggableToggle && 2, left: !draggableToggle && 2 }}
+          style={{ right: !draggableToggle && 2, left: draggableToggle && 2, background: draggableToggle ? 'green' : 'red' }}
           onClick={() => dispatch(draggableToggler(draggableToggle))}
         >
-          {draggableToggle ? "off" : "on"}
+          {!draggableToggle ? "off" : "on"}
         </div>
       </div>
 
