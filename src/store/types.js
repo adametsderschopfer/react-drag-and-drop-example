@@ -1,0 +1,6 @@
+export const ADD_CARD = 'APP/ADD_CARD' 
+export const DRAGGABLE_ON = 'APP/DRAGGABLE_ON' 
+export const DRAGGABLE_OFF = 'APP/DRAGGABLE_OFF' 
+export const UPDATE_CONTENT_WHEN_DND = 'APP/UPDATE_CONTENT_WHEN_DND' 
+export const CONTENT_UPDATE = 'APP/CONTENT_UPDATE' 
+// draggableToggle
