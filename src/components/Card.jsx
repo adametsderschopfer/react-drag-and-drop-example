@@ -35,7 +35,7 @@ const Card = React.forwardRef(
 
     return (
       <div ref={draggableToggle ? elementRef : pop} className="card" style={{ ...style, opacity }}>
-        <h1>{title.length > 6 ? title.substr(0, 6) + "..." : title}</h1>
+        <h1 className="title">{title.length > 6 ? title.substr(0, 6) + "..." : title}</h1>
         <div className="description">
           {descr.length > 80 ? descr.substr(0, 80) + "..." : descr}
         </div>
